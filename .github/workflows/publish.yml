@@ -84,7 +84,7 @@ jobs:
       commit: ${{ steps.resolve.outputs.commit }}
       has_targets: ${{ steps.check.outputs.has_targets }}
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -167,7 +167,7 @@ jobs:
     # policy contract intact. Composite action is shared with
     # .github/workflows/_common.yml.
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
       - uses: ./.github/actions/utils/validate-third-party-licenses
@@ -197,7 +197,7 @@ jobs:
           chmod +x /tmp/copy-latest-from-master.sh
           echo "✅ Downloaded latest copy script from master"
 
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
 
@@ -234,7 +234,7 @@ jobs:
 
       - name: Build matrix from inputs
         id: mk
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const { execFileSync } = require('node:child_process');
@@ -388,7 +388,7 @@ jobs:
           echo "✅ Downloaded latest copy script from master"
 
       - name: Checkout at commit
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
           # check-tags only runs `git ls-remote --tags` against origin,
@@ -691,7 +691,7 @@ jobs:
           echo "✅ Downloaded latest copy script from master"
 
       - name: Checkout at commit
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
           persist-credentials: false
@@ -762,7 +762,7 @@ jobs:
           echo "✅ Downloaded latest copy script from master"
 
       - name: Checkout at commit
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
           fetch-depth: 0
@@ -818,7 +818,7 @@ jobs:
 
       - name: Upload digest
         if: ${{ !inputs.dry_run }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: docker-digest-${{ matrix.key }}-${{ matrix.arch }}
           path: ${{ runner.temp }}/digests/*
@@ -852,7 +852,7 @@ jobs:
           chmod +x /tmp/copy-latest-from-master.sh
           echo "✅ Downloaded latest copy script from master"
 
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
           # create-git-tag's shallow-safe fallback at action.yml:86-96
@@ -924,13 +924,13 @@ jobs:
           echo "✅ Resolved $MATRIX_KEY -> version=$VERSION tag=${TAG:-<none>} should_tag=$SHOULD_TAG"
 
       - name: Download amd64 digest
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: docker-digest-${{ matrix.key }}-amd64
           path: ${{ runner.temp }}/digests
 
       - name: Download arm64 digest
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: docker-digest-${{ matrix.key }}-arm64
           path: ${{ runner.temp }}/digests
@@ -1065,7 +1065,7 @@ jobs:
           echo "✅ Downloaded latest copy script from master"
 
       - name: Checkout at commit
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
           # create-git-tag falls back to a shallow fetch when the commit
@@ -1369,7 +1369,7 @@ jobs:
           chmod +x /tmp/copy-latest-from-master.sh
           echo "✅ Downloaded latest copy script from master"
 
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.commit }}
 

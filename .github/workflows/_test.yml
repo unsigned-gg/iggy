@@ -49,7 +49,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Python SDK
       - name: Set up Docker Buildx for Python
@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload Python coverage to Codecov
         if: matrix.component == 'sdk-python' && matrix.task == 'test'
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: reports/python-coverage.lcov
@@ -83,7 +83,7 @@ jobs:
 
       - name: Upload PHP coverage to Codecov
         if: matrix.component == 'sdk-php' && matrix.task == 'test'
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: reports/php-coverage.lcov
@@ -105,7 +105,7 @@ jobs:
           matrix.component == 'sdk-node' &&
           (matrix.task == 'test' ||
           matrix.task == 'e2e')
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: >-
@@ -129,7 +129,7 @@ jobs:
 
       - name: Upload Go coverage to Codecov
         if: matrix.component == 'sdk-go' && (matrix.task == 'test' || matrix.task == 'e2e')
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: reports/${{ matrix.task == 'test' && 'go-coverage.out' || 'go-coverage-e2e.out' }}
@@ -169,7 +169,7 @@ jobs:
 
       - name: Upload C++ coverage to Codecov
         if: matrix.component == 'sdk-cpp' && matrix.task == 'test'
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: reports/cpp-coverage.lcov
@@ -181,7 +181,7 @@ jobs:
 
       - name: Upload Java coverage to Codecov
         if: matrix.component == 'sdk-java' && matrix.task == 'test'
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: reports/java-coverage/jacocoAggregated.xml
@@ -193,7 +193,7 @@ jobs:
 
       - name: Upload C# coverage to Codecov
         if: matrix.component == 'sdk-csharp' && (matrix.task == 'test' || startsWith(matrix.task, 'e2e'))
-        uses: codecov/codecov-action@v7.1.1
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: foreign/csharp/reports/coverage.cobertura.xml
@@ -206,7 +206,7 @@ jobs:
       # Web UI
       - name: Setup Node.js for Web UI
         if: matrix.component == 'web-ui'
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "24"
           package-manager-cache: false
@@ -266,7 +266,7 @@ jobs:
       # Upload reports
       - name: Upload reports
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: ${{ matrix.component }}-${{ matrix.task }}-reports-${{ github.run_id }}-${{ github.run_attempt }}
           path: |

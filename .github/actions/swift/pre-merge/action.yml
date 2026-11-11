@@ -87,7 +87,7 @@ runs:
     # builds the same debug products, and every lane reuses the checkouts.
     - name: Save SwiftPM build directory
       if: inputs.task == 'test' && steps.setup-swift.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v6.1.0
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: foreign/swift/.build
         key: ${{ steps.setup-swift.outputs.cache-key }}

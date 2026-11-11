@@ -83,7 +83,7 @@ runs:
 
     - name: Lint
       if: inputs.task == 'lint'
-      uses: golangci/golangci-lint-action@v9
+      uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
       with:
         version: v2.13.2
         working-directory: foreign/go
@@ -92,7 +92,7 @@ runs:
 
     - name: Lint BDD
       if: inputs.task == 'lint' && hashFiles('bdd/go/go.mod') != ''
-      uses: golangci/golangci-lint-action@v9
+      uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
       with:
         version: v2.13.2
         working-directory: bdd/go
@@ -101,7 +101,7 @@ runs:
 
     - name: Lint Examples
       if: inputs.task == 'lint' && hashFiles('examples/go/go.mod') != ''
-      uses: golangci/golangci-lint-action@v9
+      uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
       with:
         version: v2.13.2
         working-directory: examples/go
@@ -312,7 +312,7 @@ runs:
 
     - name: Upload e2e server logs
       if: always() && inputs.task == 'e2e'
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
       with:
         name: iggy-go-e2e-server-logs
         path: |
