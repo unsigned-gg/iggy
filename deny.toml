@@ -30,7 +30,25 @@ all-features = false
 # crate in Cargo.lock fails the check. An ignore needs the advisory id
 # and a reason, for example:
 # { id = "RUSTSEC-0000-0000", reason = "not reachable: ..." }
-ignore = []
+ignore = [
+    # zip 0.6.6 comes in through figlet-rs 1.0.0, the latest release, which
+    # still requires zip ^0.6. All four advisories are in ZipArchive::extract
+    # and ZipStreamReader::extract. figlet-rs never calls them: its
+    # decode_font_bytes uses only ZipArchive::new and by_index(0). Iggy calls
+    # only FIGlet::standard(), which parses a font embedded with include_str!
+    # and never reaches the zip path.
+    { id = "RUSTSEC-2026-0367", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
+    { id = "RUSTSEC-2026-0368", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
+    { id = "RUSTSEC-2026-0369", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
+    { id = "RUSTSEC-2026-0429", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
+    # proc-macro-error 1 comes in through static-toml 1.3.0 (the latest
+    # release) and yew-macro. Both are proc macros, so it runs only at
+    # compile time and ships no runtime code.
+    { id = "RUSTSEC-2024-0370", reason = "unmaintained, compile time only: via the static-toml and yew-macro proc macros" },
+    # pin-utils comes in only through loom, which compio-executor declares
+    # under [target.'cfg(loom)'.dependencies]. Normal builds never compile it.
+    { id = "RUSTSEC-2026-0441", reason = "unmaintained, only via loom under cfg(loom); not in normal builds" },
+]
 
 [licenses]
 allow = [
