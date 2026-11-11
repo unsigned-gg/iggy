@@ -35,6 +35,7 @@
 
 use rustls::DigitallySignedStruct;
 use rustls::client::danger::{HandshakeSignatureValid, ServerCertVerified, ServerCertVerifier};
+use rustls::pki_types::pem::{self, PemObject};
 use rustls::pki_types::{CertificateDer, PrivateKeyDer, ServerName, UnixTime};
 use std::io::{self, BufReader};
 use std::path::Path;
@@ -119,7 +120,9 @@ pub fn load_pem(cert_path: &Path, key_path: &Path) -> io::Result<TlsServerCreden
     })?;
     let mut cert_reader = BufReader::new(cert_file);
     let cert_chain: Vec<CertificateDer<'static>> =
-        rustls_pemfile::certs(&mut cert_reader).collect::<Result<_, _>>()?;
+        CertificateDer::pem_reader_iter(&mut cert_reader)
+            .collect::<Result<_, _>>()
+            .map_err(pem_to_io)?;
     if cert_chain.is_empty() {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
@@ -137,17 +140,27 @@ pub fn load_pem(cert_path: &Path, key_path: &Path) -> io::Result<TlsServerCreden
         )
     })?;
     let mut key_reader = BufReader::new(key_file);
-    let key_der = rustls_pemfile::private_key(&mut key_reader)?.ok_or_else(|| {
-        io::Error::new(
+    let key_der = PrivateKeyDer::from_pem_reader(&mut key_reader).map_err(|error| match error {
+        pem::Error::NoItemsFound => io::Error::new(
             io::ErrorKind::InvalidData,
             format!("no private key found in {}", key_path.display()),
-        )
+        ),
+        other => pem_to_io(other),
     })?;
 
     Ok(TlsServerCredentials {
         cert_chain,
         key_der,
     })
+}
+
+/// Map a PEM parse error to [`io::Error`]: read errors keep their kind,
+/// and malformed PEM becomes [`io::ErrorKind::InvalidData`].
+fn pem_to_io(error: pem::Error) -> io::Error {
+    match error {
+        pem::Error::Io(error) => error,
+        other => io::Error::new(io::ErrorKind::InvalidData, other),
+    }
 }
 
 /// Generate a fresh self-signed certificate valid for `localhost`.
@@ -182,8 +195,9 @@ pub fn self_signed_for_loopback() -> TlsServerCredentials {
 pub fn load_ca_pem(ca_path: &Path) -> io::Result<rustls::RootCertStore> {
     let ca_file = std::fs::File::open(ca_path)?;
     let mut ca_reader = BufReader::new(ca_file);
-    let certs: Vec<CertificateDer<'static>> =
-        rustls_pemfile::certs(&mut ca_reader).collect::<Result<_, _>>()?;
+    let certs: Vec<CertificateDer<'static>> = CertificateDer::pem_reader_iter(&mut ca_reader)
+        .collect::<Result<_, _>>()
+        .map_err(pem_to_io)?;
     let mut roots = rustls::RootCertStore::empty();
     let (added, _skipped) = roots.add_parsable_certificates(certs);
     if added == 0 {
@@ -377,6 +391,34 @@ mod tests {
             .unwrap();
         // Key file is empty.
         let err = load_pem(cert_file.path(), key_file.path()).expect_err("must fail");
+        assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+    }
+
+    #[test]
+    fn load_pem_maps_malformed_pem_to_invalid_data() {
+        // A certificate section that never ends is malformed PEM, not a
+        // missing file: the caller must see InvalidData.
+        let cert_file = tempfile::NamedTempFile::new().expect("tempfile cert");
+        let key_file = tempfile::NamedTempFile::new().expect("tempfile key");
+        std::fs::write(cert_file.path(), "-----BEGIN CERTIFICATE-----\nAAAA\n").unwrap();
+        let err = load_pem(cert_file.path(), key_file.path()).expect_err("must fail");
+        assert_eq!(err.kind(), io::ErrorKind::InvalidData);
+    }
+
+    #[test]
+    fn load_ca_pem_accepts_a_pem_certificate() {
+        let cert = rcgen::generate_simple_self_signed(vec!["localhost".to_owned()]).expect("rcgen");
+        let ca_file = tempfile::NamedTempFile::new().expect("tempfile ca");
+        std::fs::write(ca_file.path(), cert.cert.pem()).unwrap();
+        let roots = load_ca_pem(ca_file.path()).expect("load_ca_pem");
+        assert_eq!(roots.len(), 1);
+    }
+
+    #[test]
+    fn load_ca_pem_rejects_a_file_without_certificates() {
+        let ca_file = tempfile::NamedTempFile::new().expect("tempfile ca");
+        std::fs::write(ca_file.path(), "no pem here\n").unwrap();
+        let err = load_ca_pem(ca_file.path()).expect_err("must fail");
         assert_eq!(err.kind(), io::ErrorKind::InvalidData);
     }
 }

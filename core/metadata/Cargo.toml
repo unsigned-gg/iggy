@@ -49,7 +49,7 @@ iggy_common = { workspace = true }
 journal = { workspace = true }
 left-right = { workspace = true }
 message_bus = { workspace = true }
-paste = { workspace = true }
+pastey = { workspace = true }
 rmp = { workspace = true }
 rmp-serde = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
