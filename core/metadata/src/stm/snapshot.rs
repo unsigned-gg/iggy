@@ -586,7 +586,7 @@ macro_rules! impl_fill_restore {
             ) -> Result<(), $crate::stm::snapshot::SnapshotError> {
                 use serde::de::Error as _;
                 use $crate::stm::snapshot::SnapshotError;
-                paste::paste! {
+                pastey::paste! {
                     snapshot.validate()?;
                     let snap = snapshot.$field.clone().ok_or_else(|| {
                         SnapshotError::Deserialize(rmp_serde::decode::Error::custom(

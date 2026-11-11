@@ -353,7 +353,7 @@ macro_rules! define_state {
             $($field_vis:vis $field_name:ident : $field_type:ty),* $(,)?
         }
     ) => {
-        paste::paste! {
+        pastey::paste! {
             #[derive(Debug, Clone, Default)]
             pub struct [<$state Inner>] {
                 $(
@@ -463,7 +463,7 @@ macro_rules! collect_handlers {
         }
         $(internal { $($internal:ident),* $(,)? })?
     ) => {
-        paste::paste! {
+        pastey::paste! {
             #[derive(Debug, Clone)]
             pub enum [<$state Command>] {
                 $(
