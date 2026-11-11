@@ -135,7 +135,7 @@ jobs:
     steps:
       - name: Download triage event artifact
         if: github.event_name == 'workflow_run'
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: triage-event
           run-id: ${{ github.event.workflow_run.id }}
@@ -319,7 +319,7 @@ jobs:
 
       - name: Dispatch
         if: steps.resolve.outputs.skip != 'true'
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           COMMENT_AUTHOR: ${{ steps.resolve.outputs.comment_author }}
           COMMENT_ASSOC: ${{ steps.resolve.outputs.comment_assoc }}
@@ -1143,7 +1143,7 @@ jobs:
 
       - name: Label prolific author on open
         if: github.event_name == 'pull_request_target' && github.event.action == 'opened'
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             // Criteria from https://github.com/apache/arrow-rs/issues/11808

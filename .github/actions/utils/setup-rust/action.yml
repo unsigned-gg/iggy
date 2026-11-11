@@ -112,7 +112,7 @@ runs:
     - name: Setup Rust cache
       id: rust-cache
       if: inputs.read-cache == 'true'
-      uses: Swatinem/rust-cache@v2
+      uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
       with:
         shared-key: ${{ inputs.shared-key }}
         cache-workspace-crates: "false"
@@ -143,13 +143,13 @@ runs:
 
     - name: Install cargo-nextest
       if: inputs.install-nextest == 'true'
-      uses: taiki-e/install-action@v2
+      uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2
       with:
         tool: cargo-nextest@0.9.149
 
     - name: Install cargo-llvm-cov
       if: inputs.coverage == 'true'
-      uses: taiki-e/install-action@v2
+      uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2
       with:
         tool: cargo-llvm-cov@0.9.1
 

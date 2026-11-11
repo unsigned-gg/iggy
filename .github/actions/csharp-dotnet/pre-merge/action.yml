@@ -27,7 +27,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup .NET
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
       with:
         dotnet-version: |
           8.0.x
@@ -121,7 +121,7 @@ runs:
         find foreign/csharp/Iggy_SDK.Tests.Integration/bin -name "*.log" -path "*/container-logs/*" -exec cp {} foreign/csharp/reports/container-logs/ \; || true
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
       if: startsWith(inputs.task, 'e2e') && always()
       with:
         name: dotnet-test-results-${{ inputs.task }}
