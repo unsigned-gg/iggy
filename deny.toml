@@ -41,6 +41,13 @@ ignore = [
     { id = "RUSTSEC-2026-0368", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
     { id = "RUSTSEC-2026-0369", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
     { id = "RUSTSEC-2026-0429", reason = "zip 0.6 via figlet-rs: extract() is never called; Iggy uses FIGlet::standard()" },
+    # Two later zip 0.6 advisories, same path. 0545 is in reading AES-encrypted
+    # entries and 0548 is in ZipStreamReader. Neither runs here: the zip
+    # branch of decode_font_bytes is taken only for font bytes that start with
+    # "PK", and FIGlet::standard() parses resources/standard.flf, plain text
+    # that starts with "flf2a".
+    { id = "RUSTSEC-2026-0545", reason = "zip 0.6 via figlet-rs: zip path is never reached; Iggy uses FIGlet::standard(), an embedded plain-text font" },
+    { id = "RUSTSEC-2026-0548", reason = "zip 0.6 via figlet-rs: ZipStreamReader is never used; Iggy uses FIGlet::standard(), an embedded plain-text font" },
     # proc-macro-error 1 comes in through static-toml 1.3.0 (the latest
     # release) and yew-macro. Both are proc macros, so it runs only at
     # compile time and ships no runtime code.
@@ -48,6 +55,13 @@ ignore = [
     # pin-utils comes in only through loom, which compio-executor declares
     # under [target.'cfg(loom)'.dependencies]. Normal builds never compile it.
     { id = "RUSTSEC-2026-0441", reason = "unmaintained, only via loom under cfg(loom); not in normal builds" },
+    # chrono 0.4 and humantime 2 are direct dependencies of iggy_common, so
+    # they are in the server. Both advisories are "unmaintained", not a
+    # vulnerability, and neither has a fixed release. Removing them means
+    # replacing the crates in iggy_common, which is upstream's code. Recorded
+    # here so the check stays useful; drop each line when upstream moves off.
+    { id = "RUSTSEC-2026-0543", reason = "chrono unmaintained, no fixed release; direct dependency of upstream's iggy_common, reaches the server" },
+    { id = "RUSTSEC-2026-0542", reason = "humantime unmaintained, no fixed release; direct dependency of upstream's iggy_common, reaches the server" },
 ]
 
 [licenses]
