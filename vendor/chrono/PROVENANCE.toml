@@ -1,0 +1,6 @@
+upstream_url = "https://github.com/chronotope/chrono"
+tag = "v0.4.45"
+commit_sha = "170338250e836976a211e64728ec956e45e78a39"
+version = "0.4.45"
+spdx_license = "MIT OR Apache-2.0"
+notes = "Hardened #![forbid(unsafe_code)] compatibility crate for transitive crates.io dependents: removes all unsafe blocks (NaiveDate::from_yof NonZeroI32::new_unchecked and manual Send impl on Date<Tz>), strips OS FFI and tzfile parsers (iana-time-zone, windows-link, src/offset/local/{unix.rs,tz_data.rs,tz_info,windows.rs,win_bindings.rs}), and delegates Local system timezone offset and DST ambiguity resolution to jiff 0.2."

@@ -55,13 +55,6 @@ ignore = [
     # pin-utils comes in only through loom, which compio-executor declares
     # under [target.'cfg(loom)'.dependencies]. Normal builds never compile it.
     { id = "RUSTSEC-2026-0441", reason = "unmaintained, only via loom under cfg(loom); not in normal builds" },
-    # chrono 0.4 and humantime 2 are direct dependencies of iggy_common, so
-    # they are in the server. Both advisories are "unmaintained", not a
-    # vulnerability, and neither has a fixed release. Removing them means
-    # replacing the crates in iggy_common, which is upstream's code. Recorded
-    # here so the check stays useful; drop each line when upstream moves off.
-    { id = "RUSTSEC-2026-0543", reason = "chrono unmaintained, no fixed release; direct dependency of upstream's iggy_common, reaches the server" },
-    { id = "RUSTSEC-2026-0542", reason = "humantime unmaintained, no fixed release; direct dependency of upstream's iggy_common, reaches the server" },
 ]
 
 [licenses]

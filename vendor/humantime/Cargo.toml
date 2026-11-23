@@ -1,0 +1,20 @@
+[package]
+name = "humantime"
+version = "2.4.0"
+edition = "2021"
+rust-version = "1.70"
+description = "Human-friendly time parser and formatter (jiff-backed compatibility crate for the humantime 2.x API)"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[lib]
+name = "humantime"
+path = "src/lib.rs"
+
+[features]
+mu = []
+
+[dependencies.jiff]
+version = "0.2"
+default-features = false
+features = ["std"]
